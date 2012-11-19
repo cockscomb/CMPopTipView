@@ -26,9 +26,9 @@
 #import "CMPopTipView.h"
 
 @interface CMPopTipView ()
-@property (nonatomic, retain, readwrite)	id	targetObject;
-@property (nonatomic, retain) NSTimer *autoDismissTimer;
-@property (nonatomic, retain) UIButton *dismissTarget;
+@property (nonatomic, strong, readwrite)	id	targetObject;
+@property (nonatomic, strong) NSTimer *autoDismissTimer;
+@property (nonatomic, strong) UIButton *dismissTarget;
 
 @end
 
@@ -458,13 +458,13 @@
 }
 
 - (void)autoDismissAnimatedDidFire:(NSTimer *)theTimer {
-    NSNumber *animated = [[theTimer userInfo] objectForKey:@"animated"];
+    NSNumber *animated = [theTimer userInfo][@"animated"];
     [self dismissAnimated:[animated boolValue]];
 	[self notifyDelegatePopTipViewWasDismissedByUser];
 }
 
 - (void)autoDismissAnimated:(BOOL)animated atTimeInterval:(NSTimeInterval)timeInvertal {
-    NSDictionary * userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:animated] forKey:@"animated"];
+    NSDictionary * userInfo = @{@"animated": @(animated)};
     
     self.autoDismissTimer = [NSTimer scheduledTimerWithTimeInterval:timeInvertal
 															 target:self
@@ -512,11 +512,11 @@
 		sidePadding = 2.0;
         _borderWidth = 1.0;
 		
-		_textFont = [[UIFont boldSystemFontOfSize:14.0] retain];
-		_textColor = [[UIColor whiteColor] retain];
+		_textFont = [UIFont boldSystemFontOfSize:14.0];
+		_textColor = [UIColor whiteColor];
         _textAlignment = UITextAlignmentCenter;
-		_backgroundColor = [[UIColor colorWithRed:62.0/255.0 green:60.0/255.0 blue:154.0/255.0 alpha:1.0] retain];
-        _borderColor = [[UIColor blackColor] retain];
+		_backgroundColor = [UIColor colorWithRed:62.0/255.0 green:60.0/255.0 blue:154.0/255.0 alpha:1.0];
+        _borderColor = [UIColor blackColor];
         self.animation = CMPopTipAnimationSlide;
         self.dismissTapAnywhere = NO;
     }
@@ -544,20 +544,6 @@
         [self addSubview:self.customView];
 	}
 	return self;
-}
-
-- (void)dealloc {
-	[_autoDismissTimer release];
-	[_dismissTarget release];
-	[self.backgroundColor release];
-    [self.borderColor release];
-    [customView release];
-	[message release];
-	[targetObject release];
-	[self.textColor release];
-	[self.textFont release];
-	
-    [super dealloc];
 }
 
 

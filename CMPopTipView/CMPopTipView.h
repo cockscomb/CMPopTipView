@@ -103,7 +103,7 @@ typedef enum {
 
 
 @interface CMPopTipView : UIView <UIAppearance, UIAppearanceContainer> {
-	id<CMPopTipViewDelegate>	delegate;
+	id<CMPopTipViewDelegate>	__unsafe_unretained delegate;
 	NSString				*message;
 	id						targetObject;
     CMPopTipAnimation       animation;
@@ -118,18 +118,18 @@ typedef enum {
 	CGFloat					pointerSize;
 	CGPoint					targetPoint;
 }
-@property (nonatomic, retain)			UIColor					*backgroundColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, retain)			UIColor					*textColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, retain)			UIFont					*textFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong)			UIColor					*backgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong)			UIColor					*textColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong)			UIFont					*textFont UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign)			UITextAlignment			textAlignment UI_APPEARANCE_SELECTOR;
-@property (nonatomic, retain)			UIColor					*borderColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong)			UIColor					*borderColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign)			CGFloat					borderWidth UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign)		id<CMPopTipViewDelegate>	delegate;
+@property (nonatomic, unsafe_unretained)		id<CMPopTipViewDelegate>	delegate;
 @property (nonatomic, assign)			BOOL					disableTapToDismiss;
 @property (nonatomic, assign)			BOOL					dismissTapAnywhere;
-@property (nonatomic, retain)			NSString				*message;
-@property (nonatomic, retain)           UIView	                *customView;
-@property (nonatomic, retain, readonly)	id						targetObject;
+@property (nonatomic, strong)			NSString				*message;
+@property (nonatomic, strong)           UIView	                *customView;
+@property (nonatomic, strong, readonly)	id						targetObject;
 @property (nonatomic, assign)           CMPopTipAnimation       animation;
 @property (nonatomic, assign)           CGFloat                 maxWidth;
 
