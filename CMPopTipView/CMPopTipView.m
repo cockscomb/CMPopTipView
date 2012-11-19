@@ -10,10 +10,10 @@
 //  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 //  copies of the Software, and to permit persons to whom the Software is
 //  furnished to do so, subject to the following conditions:
-//  
+//
 //  The above copyright notice and this permission notice shall be included in
 //  all copies or substantial portions of the Software.
-//  
+//
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 //  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 //  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,22 +29,17 @@
 @property (nonatomic, retain, readwrite)	id	targetObject;
 @property (nonatomic, retain) NSTimer *autoDismissTimer;
 @property (nonatomic, retain) UIButton *dismissTarget;
+
 @end
 
 
 @implementation CMPopTipView
 
 @synthesize autoDismissTimer = _autoDismissTimer;
-@synthesize backgroundColor;
 @synthesize delegate;
 @synthesize message;
 @synthesize customView;
 @synthesize targetObject;
-@synthesize textColor;
-@synthesize textFont;
-@synthesize textAlignment;
-@synthesize borderColor;
-@synthesize borderWidth;
 @synthesize animation;
 @synthesize maxWidth;
 @synthesize disableTapToDismiss;
@@ -83,10 +78,10 @@
 	
 	CGRect bubbleRect = [self bubbleFrame];
 	
-	CGContextRef c = UIGraphicsGetCurrentContext(); 
+	CGContextRef c = UIGraphicsGetCurrentContext();
     
     CGContextSetRGBStrokeColor(c, 0.0, 0.0, 0.0, 1.0);	// black
-	CGContextSetLineWidth(c, borderWidth);
+	CGContextSetLineWidth(c, self.borderWidth);
     
 	CGMutablePathRef bubblePath = CGPathCreateMutable();
 	
@@ -167,8 +162,8 @@
 	CGFloat green;
 	CGFloat blue;
 	CGFloat alpha;
-	int numComponents = CGColorGetNumberOfComponents([backgroundColor CGColor]);
-	const CGFloat *components = CGColorGetComponents([backgroundColor CGColor]);
+	int numComponents = CGColorGetNumberOfComponents([self.backgroundColor CGColor]);
+	const CGFloat *components = CGColorGetComponents([self.backgroundColor CGColor]);
 	if (numComponents == 2) {
 		red = components[0];
 		green = components[0];
@@ -182,7 +177,7 @@
 		alpha = components[3];
 	}
 	CGFloat colorList[] = {
-		//red, green, blue, alpha 
+		//red, green, blue, alpha
 		red*1.16+colourHL, green*1.16+colourHL, blue*1.16+colourHL, alpha,
 		red*1.16+colourHL, green*1.16+colourHL, blue*1.16+colourHL, alpha,
 		red*1.08+colourHL, green*1.08+colourHL, blue*1.08+colourHL, alpha,
@@ -202,8 +197,8 @@
 	CGColorSpaceRelease(myColorSpace);
 	
     //Draw Border
-    int numBorderComponents = CGColorGetNumberOfComponents([borderColor CGColor]);
-    const CGFloat *borderComponents = CGColorGetComponents(borderColor.CGColor);
+    int numBorderComponents = CGColorGetNumberOfComponents([self.borderColor CGColor]);
+    const CGFloat *borderComponents = CGColorGetComponents(self.borderColor.CGColor);
     CGFloat r, g, b, a;
 	if (numBorderComponents == 2) {
 		r = borderComponents[0];
@@ -227,10 +222,10 @@
 	// Draw text
 	
 	if (self.message) {
-		[textColor set];
+		[self.textColor set];
 		CGRect textFrame = [self contentFrame];
         [self.message drawInRect:textFrame
-                        withFont:textFont
+                        withFont:self.textFont
                    lineBreakMode:UILineBreakModeWordWrap
                        alignment:self.textAlignment];
     }
@@ -284,11 +279,11 @@
             rectWidth = (int)(containerView.frame.size.width*2/3);
         }
     }
-
+    
 	CGSize textSize = CGSizeZero;
     
     if (self.message!=nil) {
-        textSize= [self.message sizeWithFont:textFont
+        textSize= [self.message sizeWithFont:self.textFont
                            constrainedToSize:CGSizeMake(rectWidth, 99999.0)
                                lineBreakMode:UILineBreakModeWordWrap];
     }
@@ -428,7 +423,7 @@
 
 - (void)finaliseDismiss {
 	[self.autoDismissTimer invalidate]; self.autoDismissTimer = nil;
-
+    
     if (self.dismissTarget) {
         [self.dismissTarget removeFromSuperview];
 		self.dismissTarget = nil;
@@ -515,13 +510,13 @@
 		topMargin = 2.0;
 		pointerSize = 12.0;
 		sidePadding = 2.0;
-        borderWidth = 1.0;
+        _borderWidth = 1.0;
 		
-		self.textFont = [UIFont boldSystemFontOfSize:14.0];
-		self.textColor = [UIColor whiteColor];
-		self.textAlignment = UITextAlignmentCenter;
-		self.backgroundColor = [UIColor colorWithRed:62.0/255.0 green:60.0/255.0 blue:154.0/255.0 alpha:1.0];
-        self.borderColor = [UIColor blackColor];
+		_textFont = [[UIFont boldSystemFontOfSize:14.0] retain];
+		_textColor = [[UIColor whiteColor] retain];
+        _textAlignment = UITextAlignmentCenter;
+		_backgroundColor = [[UIColor colorWithRed:62.0/255.0 green:60.0/255.0 blue:154.0/255.0 alpha:1.0] retain];
+        _borderColor = [[UIColor blackColor] retain];
         self.animation = CMPopTipAnimationSlide;
         self.dismissTapAnywhere = NO;
     }
@@ -529,7 +524,7 @@
 }
 
 - (PointDirection) getPointDirection {
-  return pointDirection;
+    return pointDirection;
 }
 
 - (id)initWithMessage:(NSString *)messageToShow {
@@ -554,13 +549,13 @@
 - (void)dealloc {
 	[_autoDismissTimer release];
 	[_dismissTarget release];
-	[backgroundColor release];
-    [borderColor release];
+	[self.backgroundColor release];
+    [self.borderColor release];
     [customView release];
 	[message release];
 	[targetObject release];
-	[textColor release];
-	[textFont release];
+	[self.textColor release];
+	[self.textFont release];
 	
     [super dealloc];
 }
