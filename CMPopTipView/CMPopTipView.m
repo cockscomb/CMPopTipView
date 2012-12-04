@@ -226,7 +226,7 @@
 		CGRect textFrame = [self contentFrame];
         [self.message drawInRect:textFrame
                         withFont:self.textFont
-                   lineBreakMode:UILineBreakModeWordWrap
+                   lineBreakMode:NSLineBreakByWordWrapping
                        alignment:self.textAlignment];
     }
 }
@@ -285,7 +285,7 @@
     if (self.message!=nil) {
         textSize= [self.message sizeWithFont:self.textFont
                            constrainedToSize:CGSizeMake(rectWidth, 99999.0)
-                               lineBreakMode:UILineBreakModeWordWrap];
+                               lineBreakMode:NSLineBreakByWordWrapping];
     }
     if (self.customView != nil) {
         textSize = self.customView.frame.size;
@@ -514,7 +514,7 @@
 		
 		_textFont = [UIFont boldSystemFontOfSize:14.0];
 		_textColor = [UIColor whiteColor];
-        _textAlignment = UITextAlignmentCenter;
+        _textAlignment = NSTextAlignmentCenter;
 		_backgroundColor = [UIColor colorWithRed:62.0/255.0 green:60.0/255.0 blue:154.0/255.0 alpha:1.0];
         _borderColor = [UIColor blackColor];
         self.animation = CMPopTipAnimationSlide;
